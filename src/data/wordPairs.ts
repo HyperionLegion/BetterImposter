@@ -1,0 +1,131 @@
+import type { ContentPair } from '../types/game';
+
+export const wordPairs: ContentPair[] = [
+  // Food & Drinks (12 pairs)
+  { normal: 'Sushi', impostor: 'Ramen', category: 'Food & Drinks' },
+  { normal: 'Boba tea', impostor: 'Iced coffee', category: 'Food & Drinks' },
+  { normal: 'Chipotle', impostor: 'Qdoba', category: 'Food & Drinks' },
+  { normal: 'Hot Cheetos', impostor: 'Takis', category: 'Food & Drinks' },
+  { normal: 'Chick-fil-A', impostor: 'Popeyes', category: 'Food & Drinks' },
+  { normal: 'Oat milk', impostor: 'Almond milk', category: 'Food & Drinks' },
+  { normal: "Domino's", impostor: "Papa John's", category: 'Food & Drinks' },
+  { normal: 'Energy drink', impostor: 'Cold brew', category: 'Food & Drinks' },
+  { normal: 'In-N-Out', impostor: 'Five Guys', category: 'Food & Drinks' },
+  { normal: 'Avocado toast', impostor: 'Acai bowl', category: 'Food & Drinks' },
+  { normal: "Trader Joe's", impostor: 'Whole Foods', category: 'Food & Drinks' },
+  { normal: 'Crumbl Cookies', impostor: 'Insomnia Cookies', category: 'Food & Drinks' },
+
+  // College Life (12 pairs)
+  { normal: 'All-nighter', impostor: 'Power nap', category: 'College Life' },
+  { normal: 'Syllabus week', impostor: 'Finals week', category: 'College Life' },
+  { normal: 'Dorm room', impostor: 'Off-campus apartment', category: 'College Life' },
+  { normal: 'Office hours', impostor: 'Study group', category: 'College Life' },
+  { normal: 'Lecture hall', impostor: 'Discussion section', category: 'College Life' },
+  { normal: 'GPA', impostor: "Dean's list", category: 'College Life' },
+  { normal: 'Rate My Professor', impostor: 'Course catalog', category: 'College Life' },
+  { normal: 'Library', impostor: 'Coffee shop', category: 'College Life' },
+  { normal: 'Group project', impostor: 'Solo assignment', category: 'College Life' },
+  { normal: 'Frat house', impostor: 'Student center', category: 'College Life' },
+  { normal: 'Graduation', impostor: 'Commencement', category: 'College Life' },
+  { normal: 'Study abroad', impostor: 'Gap year', category: 'College Life' },
+
+  // Pop Culture (12 pairs)
+  { normal: 'Taylor Swift', impostor: 'Beyoncé', category: 'Pop Culture' },
+  { normal: 'TikTok', impostor: 'Instagram Reels', category: 'Pop Culture' },
+  { normal: 'Netflix', impostor: 'Hulu', category: 'Pop Culture' },
+  { normal: 'ChatGPT', impostor: 'Google', category: 'Pop Culture' },
+  { normal: 'iPhone', impostor: 'Android', category: 'Pop Culture' },
+  { normal: 'Marvel', impostor: 'DC', category: 'Pop Culture' },
+  { normal: 'Harry Potter', impostor: 'Lord of the Rings', category: 'Pop Culture' },
+  { normal: 'Star Wars', impostor: 'Star Trek', category: 'Pop Culture' },
+  { normal: 'The Office', impostor: 'Parks and Rec', category: 'Pop Culture' },
+  { normal: 'Stranger Things', impostor: 'Wednesday', category: 'Pop Culture' },
+  { normal: 'Bad Bunny', impostor: 'Drake', category: 'Pop Culture' },
+  { normal: 'Minecraft', impostor: 'Fortnite', category: 'Pop Culture' },
+
+  // Sports (10 pairs)
+  { normal: 'March Madness', impostor: 'Super Bowl', category: 'Sports' },
+  { normal: 'Intramural football', impostor: 'Intramural soccer', category: 'Sports' },
+  { normal: 'Fantasy football', impostor: 'Sports betting', category: 'Sports' },
+  { normal: 'NBA', impostor: 'NFL', category: 'Sports' },
+  { normal: 'Tailgate', impostor: 'Watch party', category: 'Sports' },
+  { normal: 'CrossFit', impostor: 'Orange Theory', category: 'Sports' },
+  { normal: 'Peloton', impostor: 'SoulCycle', category: 'Sports' },
+  { normal: 'Running', impostor: 'Hiking', category: 'Sports' },
+  { normal: 'Yoga', impostor: 'Pilates', category: 'Sports' },
+  { normal: 'Rock climbing', impostor: 'Bouldering', category: 'Sports' },
+
+  // Social Media (10 pairs)
+  { normal: 'Going viral', impostor: 'Getting cancelled', category: 'Social Media' },
+  { normal: 'Finsta', impostor: 'Spam account', category: 'Social Media' },
+  { normal: 'Reddit rabbit hole', impostor: 'Wikipedia rabbit hole', category: 'Social Media' },
+  { normal: 'Twitter beef', impostor: 'Subtweet', category: 'Social Media' },
+  { normal: 'BeReal', impostor: 'Photo dump', category: 'Social Media' },
+  { normal: 'Doom scrolling', impostor: 'Binge watching', category: 'Social Media' },
+  { normal: 'LinkedIn grind', impostor: 'Hustle culture', category: 'Social Media' },
+  { normal: 'Podcast', impostor: 'YouTube video', category: 'Social Media' },
+  { normal: 'Influencer', impostor: 'Content creator', category: 'Social Media' },
+  { normal: 'Stan account', impostor: 'Fan page', category: 'Social Media' },
+
+  // Party & Social (10 pairs)
+  { normal: 'Pregame', impostor: 'Afterparty', category: 'Party & Social' },
+  { normal: 'Beer pong', impostor: 'Flip cup', category: 'Party & Social' },
+  { normal: 'House party', impostor: 'Rooftop party', category: 'Party & Social' },
+  { normal: 'Karaoke night', impostor: 'Game night', category: 'Party & Social' },
+  { normal: 'Potluck', impostor: 'BYOB', category: 'Party & Social' },
+  { normal: 'Kickback', impostor: 'Function', category: 'Party & Social' },
+  { normal: 'Day party', impostor: 'Pool party', category: 'Party & Social' },
+  { normal: 'Mixer', impostor: 'Social', category: 'Party & Social' },
+  { normal: 'Theme party', impostor: 'Costume party', category: 'Party & Social' },
+  { normal: 'Happy hour', impostor: 'Brunch', category: 'Party & Social' },
+
+  // Dating & Relationships (10 pairs)
+  { normal: 'Situationship', impostor: 'Friends with benefits', category: 'Dating & Relationships' },
+  { normal: 'Ghosting', impostor: 'Slow fading', category: 'Dating & Relationships' },
+  { normal: 'Red flag', impostor: 'Ick', category: 'Dating & Relationships' },
+  { normal: 'Talking stage', impostor: 'Dating', category: 'Dating & Relationships' },
+  { normal: 'Hinge', impostor: 'Bumble', category: 'Dating & Relationships' },
+  { normal: 'First date', impostor: 'Blind date', category: 'Dating & Relationships' },
+  { normal: 'Long distance', impostor: 'On a break', category: 'Dating & Relationships' },
+  { normal: 'Love bombing', impostor: 'Future faking', category: 'Dating & Relationships' },
+  { normal: 'Hot take', impostor: 'Unpopular opinion', category: 'Dating & Relationships' },
+  { normal: 'Cuffing season', impostor: 'Summer fling', category: 'Dating & Relationships' },
+
+  // Travel (10 pairs)
+  { normal: 'Spring break Cancun', impostor: 'Spring break Miami', category: 'Travel' },
+  { normal: 'Airbnb', impostor: 'Hotel', category: 'Travel' },
+  { normal: 'Uber', impostor: 'Lyft', category: 'Travel' },
+  { normal: 'Road trip', impostor: 'Flight', category: 'Travel' },
+  { normal: 'Backpacking', impostor: 'Glamping', category: 'Travel' },
+  { normal: 'Hostel', impostor: 'Resort', category: 'Travel' },
+  { normal: 'TSA PreCheck', impostor: 'Global Entry', category: 'Travel' },
+  { normal: 'Carry-on', impostor: 'Checked bag', category: 'Travel' },
+  { normal: 'Aisle seat', impostor: 'Window seat', category: 'Travel' },
+  { normal: 'Study abroad', impostor: 'Semester at sea', category: 'Travel' },
+
+  // Music (10 pairs)
+  { normal: 'Spotify Wrapped', impostor: 'Apple Music Replay', category: 'Music' },
+  { normal: 'Concert', impostor: 'Music festival', category: 'Music' },
+  { normal: 'Lo-fi beats', impostor: 'Jazz', category: 'Music' },
+  { normal: 'Vinyl record', impostor: 'Cassette tape', category: 'Music' },
+  { normal: 'Pop', impostor: 'Indie', category: 'Music' },
+  { normal: 'Headphones', impostor: 'Earbuds', category: 'Music' },
+  { normal: 'Karaoke', impostor: 'Open mic', category: 'Music' },
+  { normal: 'SoundCloud rapper', impostor: 'Bedroom producer', category: 'Music' },
+  { normal: 'Album drop', impostor: 'Single release', category: 'Music' },
+  { normal: 'Coachella', impostor: 'Lollapalooza', category: 'Music' },
+
+  // Movies & TV (10 pairs)
+  { normal: 'Binge-watching', impostor: 'Weekly episodes', category: 'Movies & TV' },
+  { normal: 'Horror', impostor: 'Thriller', category: 'Movies & TV' },
+  { normal: 'Anime', impostor: 'Cartoon', category: 'Movies & TV' },
+  { normal: 'Documentary', impostor: 'True crime', category: 'Movies & TV' },
+  { normal: 'Sequel', impostor: 'Reboot', category: 'Movies & TV' },
+  { normal: 'IMAX', impostor: 'Drive-in', category: 'Movies & TV' },
+  { normal: 'Movie theater', impostor: 'Home theater', category: 'Movies & TV' },
+  { normal: 'Rom-com', impostor: 'Sitcom', category: 'Movies & TV' },
+  { normal: 'Oscar bait', impostor: 'Cult classic', category: 'Movies & TV' },
+  { normal: "Director's cut", impostor: 'Extended edition', category: 'Movies & TV' },
+];
+
+export const wordCategories = [...new Set(wordPairs.map(p => p.category))];

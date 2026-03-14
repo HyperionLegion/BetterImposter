@@ -19,7 +19,7 @@ const playerColors = [
 
 export default function ResultsScreen() {
   const {
-    players, mode, currentWord, currentHint, currentCategory,
+    players, mode, currentWord, currentHint,
     currentNormalQuestion, currentImposterQuestion, playAgain, resetToSetup,
   } = useGameStore();
 

@@ -5,7 +5,7 @@ import Button from '../ui/Button';
 import { motion } from 'framer-motion';
 
 export default function DiscussionScreen() {
-  const { timerDuration, currentCategory, goToResults } = useGameStore();
+  const { timerDuration, currentCategory, mode, goToResults } = useGameStore();
   const { secondsLeft, progress, isRunning, start, pause } = useTimer(timerDuration, goToResults);
 
   return (
@@ -49,7 +49,9 @@ export default function DiscussionScreen() {
         transition={{ delay: 0.3 }}
         className="text-text-secondary text-sm text-center max-w-[280px] leading-relaxed"
       >
-        Give clues about your word without saying it directly. Find who has a different one!
+        {mode === 'word'
+          ? 'Give clues about your word without saying it directly. Find who has a different one!'
+          : 'Discuss your answers and figure out who got a different question!'}
       </motion.p>
 
       <motion.div

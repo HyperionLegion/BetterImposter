@@ -142,7 +142,7 @@ export const useGameStore = create<GameState & GameActions & { playerNames: stri
     if (currentPlayerIndex + 1 >= players.length) {
       set({
         players: updated,
-        phase: mode === 'word' ? 'discussion' : 'results',
+        phase: 'discussion',
       });
     } else {
       set({

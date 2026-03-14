@@ -8,6 +8,7 @@ import ResultsScreen from './components/screens/ResultsScreen';
 
 function App() {
   const phase = useGameStore(s => s.phase);
+  const currentPlayerIndex = useGameStore(s => s.currentPlayerIndex);
 
   return (
     <div className="min-h-dvh bg-bg relative overflow-hidden">
@@ -20,8 +21,8 @@ function App() {
       <div className="relative z-10">
         <AnimatePresence mode="wait">
           {phase === 'setup' && <SetupScreen key="setup" />}
-          {phase === 'playerTurn' && <PlayerTurnScreen key="playerTurn" />}
-          {phase === 'reveal' && <RevealScreen key="reveal" />}
+          {phase === 'playerTurn' && <PlayerTurnScreen key={`playerTurn-${currentPlayerIndex}`} />}
+          {phase === 'reveal' && <RevealScreen key={`reveal-${currentPlayerIndex}`} />}
           {phase === 'discussion' && <DiscussionScreen key="discussion" />}
           {phase === 'results' && <ResultsScreen key="results" />}
         </AnimatePresence>

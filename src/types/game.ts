@@ -5,33 +5,44 @@ export type GamePhase =
   | 'playerTurn'
   | 'reveal'
   | 'discussion'
-  | 'voting'
   | 'results';
 
-export interface ContentPair {
+export interface WordEntry {
+  word: string;
+  hint: string;
+  category: string;
+}
+
+export interface QuestionPair {
   normal: string;
-  impostor: string;
+  imposter: string;
   category: string;
 }
 
 export interface PlayerState {
   id: number;
   name: string;
-  isImpostor: boolean;
-  content: string;
-  vote: number | null;
-  votesReceived: number;
+  isImposter: boolean;
+  content: string;        // the word, hint, or question they see
+  response: string;       // typed response (question mode only)
+  hasRevealed: boolean;   // whether they've seen their content
 }
 
 export interface GameState {
   phase: GamePhase;
   mode: GameMode;
   playerCount: number;
-  impostorCount: number;
+  imposterMin: number;
+  imposterMax: number;
   category: string;
   timerDuration: number;
   players: PlayerState[];
   currentPlayerIndex: number;
-  currentPair: ContentPair | null;
-  winner: 'crew' | 'impostors' | null;
+  // Word mode: the actual word + hint
+  currentWord: string | null;
+  currentHint: string | null;
+  currentCategory: string | null;
+  // Question mode: both questions
+  currentNormalQuestion: string | null;
+  currentImposterQuestion: string | null;
 }

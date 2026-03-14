@@ -1,70 +1,152 @@
 import { create } from 'zustand';
 import type { GameState, GameMode } from '../types/game';
-import { pickPair, assignPlayers, tallyVotes, getCategories } from '../lib/gameLogic';
+import { pickWordEntry, pickQuestionPair, assignPlayers, getCategories } from '../lib/gameLogic';
 
 interface GameActions {
   setPlayerCount: (n: number) => void;
-  setImpostorCount: (n: number) => void;
+  setImposterMin: (n: number) => void;
+  setImposterMax: (n: number) => void;
   setMode: (mode: GameMode) => void;
   setCategory: (category: string) => void;
   setTimerDuration: (seconds: number) => void;
+  setPlayerName: (index: number, name: string) => void;
   startGame: () => void;
-  nextPlayer: () => void;
   showReveal: () => void;
+  submitResponse: (playerId: number, response: string) => void;
+  nextPlayer: () => void;
   startDiscussion: () => void;
-  startVoting: () => void;
-  castVote: (voterId: number, targetId: number) => void;
-  showResults: () => void;
+  goToResults: () => void;
   playAgain: () => void;
   resetToSetup: () => void;
+}
+
+function randomInRange(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const initialState: GameState = {
   phase: 'setup',
   mode: 'word',
   playerCount: 4,
-  impostorCount: 1,
+  imposterMin: 1,
+  imposterMax: 1,
   category: 'Random',
   timerDuration: 120,
   players: [],
   currentPlayerIndex: 0,
-  currentPair: null,
-  winner: null,
+  currentWord: null,
+  currentHint: null,
+  currentCategory: null,
+  currentNormalQuestion: null,
+  currentImposterQuestion: null,
 };
 
-export const useGameStore = create<GameState & GameActions>((set, get) => ({
+export const useGameStore = create<GameState & GameActions & { playerNames: string[] }>((set, get) => ({
   ...initialState,
+  playerNames: ['', '', '', ''],
 
-  setPlayerCount: (n) => set({ playerCount: Math.max(3, Math.min(12, n)) }),
-  setImpostorCount: (n) => {
-    const max = Math.floor(get().playerCount / 3);
-    set({ impostorCount: Math.max(1, Math.min(max, n)) });
+  setPlayerCount: (n) => {
+    const count = Math.max(3, Math.min(12, n));
+    const names = [...get().playerNames];
+    while (names.length < count) names.push('');
+    while (names.length > count) names.pop();
+    set({
+      playerCount: count,
+      playerNames: names,
+      imposterMin: Math.min(get().imposterMin, count),
+      imposterMax: Math.min(get().imposterMax, count),
+    });
   },
+
+  setImposterMin: (n) => {
+    const clamped = Math.max(0, Math.min(get().playerCount, n));
+    set({
+      imposterMin: clamped,
+      imposterMax: Math.max(get().imposterMax, clamped),
+    });
+  },
+
+  setImposterMax: (n) => {
+    const clamped = Math.max(0, Math.min(get().playerCount, n));
+    set({
+      imposterMax: clamped,
+      imposterMin: Math.min(get().imposterMin, clamped),
+    });
+  },
+
   setMode: (mode) => set({ mode, category: 'Random' }),
   setCategory: (category) => set({ category }),
   setTimerDuration: (seconds) => set({ timerDuration: seconds }),
 
+  setPlayerName: (index, name) => {
+    const names = [...get().playerNames];
+    names[index] = name;
+    set({ playerNames: names });
+  },
+
   startGame: () => {
-    const { mode, category, playerCount, impostorCount } = get();
-    const pair = pickPair(mode, category);
-    const players = assignPlayers(playerCount, impostorCount, pair);
+    const { mode, category, playerCount, imposterMin, imposterMax, playerNames } = get();
+    const imposterCount = randomInRange(imposterMin, imposterMax);
+    const names = playerNames.map((n, i) => n.trim() || `Player ${i + 1}`);
+
+    let wordEntry = null;
+    let questionPair = null;
+    let currentWord = null;
+    let currentHint = null;
+    let currentCategory: string | null = null;
+    let currentNormalQuestion = null;
+    let currentImposterQuestion = null;
+
+    if (mode === 'word') {
+      wordEntry = pickWordEntry(category);
+      currentWord = wordEntry.word;
+      currentHint = wordEntry.hint;
+      currentCategory = wordEntry.category;
+    } else {
+      questionPair = pickQuestionPair(category);
+      currentNormalQuestion = questionPair.normal;
+      currentImposterQuestion = questionPair.imposter;
+      currentCategory = questionPair.category;
+    }
+
+    const players = assignPlayers(names, imposterCount, mode, wordEntry, questionPair);
+
     set({
       phase: 'playerTurn',
       currentPlayerIndex: 0,
-      currentPair: pair,
       players,
-      winner: null,
+      currentWord,
+      currentHint,
+      currentCategory,
+      currentNormalQuestion,
+      currentImposterQuestion,
+      playerNames: names,
     });
   },
 
   showReveal: () => set({ phase: 'reveal' }),
 
+  submitResponse: (playerId, response) => {
+    const players = get().players.map(p =>
+      p.id === playerId ? { ...p, response, hasRevealed: true } : p
+    );
+    set({ players });
+  },
+
   nextPlayer: () => {
-    const { currentPlayerIndex, players } = get();
+    const { currentPlayerIndex, players, mode } = get();
+    const updated = players.map((p, i) =>
+      i === currentPlayerIndex ? { ...p, hasRevealed: true } : p
+    );
+
     if (currentPlayerIndex + 1 >= players.length) {
-      set({ phase: 'discussion' });
+      set({
+        players: updated,
+        phase: mode === 'word' ? 'discussion' : 'results',
+      });
     } else {
       set({
+        players: updated,
         phase: 'playerTurn',
         currentPlayerIndex: currentPlayerIndex + 1,
       });
@@ -72,40 +154,50 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   },
 
   startDiscussion: () => set({ phase: 'discussion' }),
-  startVoting: () => set({ phase: 'voting' }),
-
-  castVote: (voterId, targetId) => {
-    const players = get().players.map(p =>
-      p.id === voterId ? { ...p, vote: targetId } : p
-    );
-    set({ players });
-
-    // Auto-advance to results when all votes are in
-    if (players.every(p => p.vote !== null)) {
-      const result = tallyVotes(players);
-      set({ players: result.players, winner: result.winner, phase: 'results' });
-    }
-  },
-
-  showResults: () => {
-    const { players } = get();
-    const result = tallyVotes(players);
-    set({ players: result.players, winner: result.winner, phase: 'results' });
-  },
+  goToResults: () => set({ phase: 'results' }),
 
   playAgain: () => {
-    const { mode, category, playerCount, impostorCount, timerDuration } = get();
-    const pair = pickPair(mode, category);
-    const players = assignPlayers(playerCount, impostorCount, pair);
+    const { mode, category, imposterMin, imposterMax, timerDuration, playerNames } = get();
+    const imposterCount = randomInRange(imposterMin, imposterMax);
+    const names = playerNames.map((n, i) => n.trim() || `Player ${i + 1}`);
+
+    let wordEntry = null;
+    let questionPair = null;
+    let currentWord = null;
+    let currentHint = null;
+    let currentCategory: string | null = null;
+    let currentNormalQuestion = null;
+    let currentImposterQuestion = null;
+
+    if (mode === 'word') {
+      wordEntry = pickWordEntry(category);
+      currentWord = wordEntry.word;
+      currentHint = wordEntry.hint;
+      currentCategory = wordEntry.category;
+    } else {
+      questionPair = pickQuestionPair(category);
+      currentNormalQuestion = questionPair.normal;
+      currentImposterQuestion = questionPair.imposter;
+      currentCategory = questionPair.category;
+    }
+
+    const players = assignPlayers(names, imposterCount, mode, wordEntry, questionPair);
+
     set({
       phase: 'playerTurn',
       currentPlayerIndex: 0,
-      currentPair: pair,
       players,
-      winner: null,
+      currentWord,
+      currentHint,
+      currentCategory,
+      currentNormalQuestion,
+      currentImposterQuestion,
       timerDuration,
     });
   },
 
-  resetToSetup: () => set({ ...initialState }),
+  resetToSetup: () => {
+    const { playerNames } = get();
+    set({ ...initialState, playerNames });
+  },
 }));

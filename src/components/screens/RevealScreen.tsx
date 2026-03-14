@@ -59,19 +59,19 @@ export default function RevealScreen() {
       >
         {/* Card glow */}
         <div className={`absolute -inset-4 rounded-[28px] blur-2xl ${
-          player.isImposter
+          player.isImposter && mode === 'word'
             ? 'bg-gradient-to-br from-crimson/15 to-orange-500/10'
             : 'bg-gradient-to-br from-cyan/15 to-violet/10'
         }`} />
 
         <div className={`relative backdrop-blur-md border rounded-3xl px-8 py-10 text-center ${
-          player.isImposter
+          player.isImposter && mode === 'word'
             ? 'bg-card/70 border-crimson/15'
             : 'bg-card/70 border-white/[0.08]'
         }`}>
           {/* Decorative corner accents */}
           {(() => {
-            const color = player.isImposter ? 'border-crimson/30' : 'border-cyan/30';
+            const color = player.isImposter && mode === 'word' ? 'border-crimson/30' : 'border-cyan/30';
             return <>
               <div className={`absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 ${color} rounded-tl-lg`} />
               <div className={`absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 ${color} rounded-tr-lg`} />
@@ -96,11 +96,6 @@ export default function RevealScreen() {
             </>
           ) : (
             <>
-              {player.isImposter && (
-                <p className="text-crimson text-[11px] uppercase tracking-[0.2em] font-bold mb-2">
-                  Imposter
-                </p>
-              )}
               <p className="text-[11px] uppercase tracking-[0.25em] text-text-dim font-semibold mb-5">
                 Your Question
               </p>

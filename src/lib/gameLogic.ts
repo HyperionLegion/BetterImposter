@@ -28,10 +28,13 @@ export function assignPlayers(
   questionPair: QuestionPair | null,
 ): PlayerState[] {
   const playerCount = names.length;
-  const imposterIndices = new Set<number>();
-  while (imposterIndices.size < imposterCount) {
-    imposterIndices.add(Math.floor(Math.random() * playerCount));
+  // Fisher-Yates shuffle to pick imposters uniformly
+  const indices = Array.from({ length: playerCount }, (_, i) => i);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
   }
+  const imposterIndices = new Set(indices.slice(0, imposterCount));
 
   return names.map((name, i) => {
     const isImposter = imposterIndices.has(i);

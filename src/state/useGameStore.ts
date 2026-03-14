@@ -134,7 +134,7 @@ export const useGameStore = create<GameState & GameActions & { playerNames: stri
   },
 
   nextPlayer: () => {
-    const { currentPlayerIndex, players, mode } = get();
+    const { currentPlayerIndex, players } = get();
     const updated = players.map((p, i) =>
       i === currentPlayerIndex ? { ...p, hasRevealed: true } : p
     );

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { GameState, GameMode } from '../types/game';
-import { pickWordEntry, pickQuestionPair, assignPlayers, getCategories } from '../lib/gameLogic';
+import { pickWordEntry, pickQuestionPair, assignPlayers } from '../lib/gameLogic';
 
 interface GameActions {
   setPlayerCount: (n: number) => void;
@@ -85,7 +85,7 @@ export const useGameStore = create<GameState & GameActions & { playerNames: stri
   },
 
   startGame: () => {
-    const { mode, category, playerCount, imposterMin, imposterMax, playerNames } = get();
+    const { mode, category, imposterMin, imposterMax, playerNames } = get();
     const imposterCount = randomInRange(imposterMin, imposterMax);
     const names = playerNames.map((n, i) => n.trim() || `Player ${i + 1}`);
 
